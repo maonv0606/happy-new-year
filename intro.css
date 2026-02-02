@@ -1989,20 +1989,22 @@ body{
         margin-top: -30px;
     }
     .box-lion_dance .lion_dance1{
-        width: 170px;
-        top: 400px;
-        right: 20px;
-        z-index: 100000;
+        width: 140px;
+        top: auto;
+        bottom: 20px;
+        right: 10px;
+        z-index: 50;
     }
     .box-lion_dance .lion_dance1::before{
-        width: 100px;
-        bottom: 40px;
+        width: 80px;
+        bottom: 30px;
     }
     .box-lion_dance .lion_dance2{
-        width: 180px;
-        top: 415px;
-        left: 20px;
-        z-index: 100000;
+        width: 150px;
+        top: auto;
+        bottom: 30px;
+        left: 10px;
+        z-index: 50;
     }
     .box-lion_dance .lion_dance2::before{
         width: 80px;
@@ -2127,17 +2129,21 @@ body{
 
  @media screen and (max-width: 390px){
     .box-lion_dance .lion_dance1{
-        top: 550px;
-        z-index: 100000;
-        right: 0;
+        width: 120px;
+        top: auto;
+        bottom: 10px;
+        right: 5px;
+        z-index: 50;
     }
     .box-lion_dance .lion_dance2{
-        top: 565px;
-        z-index: 100000;
-        left: 0;
+        width: 130px;
+        top: auto;
+        bottom: 15px;
+        left: 5px;
+        z-index: 50;
     }
     .box-button{
-        top: 90%;
+        top: 85%;
     }
     .number2023{
         font-size: 50px;
