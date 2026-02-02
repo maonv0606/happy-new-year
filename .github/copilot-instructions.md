@@ -2,79 +2,80 @@
 
 ## Project Overview
 
-A Vietnamese Lunar New Year (Tết) celebration website with two-phase flow:
+Vietnamese Lunar New Year (Tết) celebration website with a two-phase user flow. **No build tools** - pure vanilla HTML/CSS/JavaScript.
 
-1. **Countdown phase** (`index.html` → `app.js`) - Timer counting down to a target date
-2. **Celebration phase** (`intro.html` → `intro.js`) - Interactive greeting page with animations
-
-**No build tools required** - Pure vanilla HTML/CSS/JavaScript served as static files.
-
-## Architecture & File Relationships
+## Architecture
 
 ```
-index.html ─── style.css ─── app.js (countdown timer)
-     │                            │
-     └──────── redirects to ──────┘
-                    ↓
-intro.html ─── intro.css ─── intro.js (interactive celebration)
-     │
-data.js (personalization config - currently unused)
+index.html → app.js (countdown) ──[redirect on zero]──→ intro.html → intro.js (celebration)
+     ↓                                                        ↓
+  style.css                                              intro.css
 ```
 
-### Critical Flow Pattern
+- [data.js](../data.js) defines personalization data (not yet wired into UI)
 
-- `app.js` redirects to `intro.html` when countdown reaches zero (`window.location.href="intro.html"`)
-- Target date is hardcoded in `app.js` line 1: `new Date("jan 21, 2023 23:59:00")`
+## Critical Configuration
 
-## Key Conventions
+### Countdown Target Date
 
-### Date Configuration
-
-Update the countdown target in [app.js](app.js#L1):
+Update **only** the date string in [app.js](../app.js#L1):
 
 ```javascript
-var fut = new Date("jan 21, 2023 23:59:00").getTime();
+var fut = new Date("jan 29, 2025 00:00:00").getTime(); // Lunar New Year 2025
 ```
 
-### CSS Animation Pattern
+The redirect to `intro.html` triggers automatically when countdown reaches zero (line 19).
 
-Animations use CSS `@keyframes` + JavaScript class toggling via `classList.toggle("active")`:
+### Page Titles & SEO
+
+Update year references in:
+
+- [index.html](../index.html#L9) - `<title>Happy New Year 2026</title>`
+- [intro.html](../intro.html#L14-L25) - Open Graph meta tags for social sharing
+
+## Animation Pattern
+
+All celebration animations use CSS class toggling. The `.active` class triggers `@keyframes` defined in [intro.css](../intro.css):
 
 ```javascript
-// intro.js pattern - toggle multiple elements simultaneously
-boxFlower.classList.toggle("active");
-circleActive.classList.toggle("active");
+// intro.js - button click reveals all decorative elements
+element.classList.toggle("active");
 ```
 
-### Personalization Data Structure
+Key animated elements: `.flower-img`, `.circle`, `.cat`, `.mail`, `.rhombus`
 
-[data.js](data.js) defines user greeting cards (not yet integrated):
+## Audio
 
-```javascript
-{ ma_ten: "id", name: "Display Name", message: "...", img: "url" }
-```
+Background music auto-plays on first button click ([intro.js](../intro.js#L48-L53)):
 
-## UI Structure
+- Audio file: `image/nhac.mp3`
+- Controlled via `mySong.play()` / `mySong.paused`
 
-- **Vietnamese language** - All UI text is in Vietnamese (Ngày/Giờ/Phút/Giây)
-- **External dependencies**: Font Awesome 6.2.1 (CDN), Google Fonts (Lobster, Caramel, Fredoka One, etc.)
-- **Assets** in `/image/` - Background images, decorative elements (flowers, lanterns, lion dance GIFs)
+## Assets
+
+All media lives in `/image/`:
+
+- Backgrounds: `bgr.jpg`, `background.jpg`
+- Animations: `Lion-dance.gif`, `Lion-dance2.gif`
+- Decorations: `flower*.png`, `lanterns*.png`, `apricot-blossom.png`
+- Personalization: `tham.jpg` (recipient photo for OG image)
 
 ## Development
 
-**Run locally**: Open `index.html` directly in browser or use any static file server
-
 ```bash
-# Example using Python
+# Serve locally (any static server works)
 python3 -m http.server 8000
+# Then open http://localhost:8000
 ```
 
-## Common Tasks
+Or open `index.html` directly in browser (audio may require user interaction first).
 
-| Task                        | Location                              |
-| --------------------------- | ------------------------------------- |
-| Change countdown date       | `app.js` line 1                       |
-| Modify countdown UI         | `index.html` + `style.css`            |
-| Edit celebration animations | `intro.css` (2130 lines of keyframes) |
-| Add interactive behaviors   | `intro.js`                            |
-| Add new greeting recipients | `data.js` array                       |
+## Quick Reference
+
+| Task                            | File(s)                                                         |
+| ------------------------------- | --------------------------------------------------------------- |
+| Change countdown date           | [app.js](../app.js#L1)                                          |
+| Update year in titles           | [index.html](../index.html#L9), [intro.html](../intro.html#L30) |
+| Modify celebration animations   | [intro.css](../intro.css)                                       |
+| Add click interactions          | [intro.js](../intro.js)                                         |
+| Personalize greeting recipients | [data.js](../data.js) (needs UI integration)                    |
